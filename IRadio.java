@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 
-public class IRadio implements RadioInterface {
+public class IRadio implements Radio {
 
     Scanner scanner = new Scanner(System.in);
     Manejadora manejadora = new Manejadora();
@@ -279,221 +279,238 @@ public class IRadio implements RadioInterface {
 ///////////////////////////////////////////////////////////////////////////////////
 //se implementan los metodos de la interface para radios
 
-/**
- * {@inheritDoc}
- */
-    @Override
-    public void CambiarEstadoRadio() {
-        if(this.Status == true){
-            this.Status = false;
-            System.out.println("La radio se ha Apagado");
-        }
-        else{
-            this.Status = true;
-            System.out.println("La radio se ha encendido");
-        }
+@Override
+public boolean isOn() {
+    return false;
+}
+//encender y Apagar
+@Override
+public void turnOnOff() {
+    if(this.Status == true){
+        this.Status = false;
+        System.out.println("La radio se ha Apagado");
     }
-/**
- * {@inheritDoc}
- */
-    @Override 
-    public void CambiarModulacion(){
-        if(this.Modulacion == "AM"){
-            this.Modulacion = "FM";
-        }else{
-            this.Modulacion = "AM";
-        }
-        System.out.println("Se ha cambiado la modulacion. Usted esta escuchando ahora en "+getModulacion()); 
+    else{
+        this.Status = true;
+        System.out.println("La radio se ha encendido");
     }
-/**
- * {@inheritDoc}
- */
-    public void EmisoraSiguiente(){
-        if(this.Modulacion == "AM"){
-            this.Emisora_ActualAM = (this.Emisora_ActualAM + 10);
-            if(this.Emisora_ActualAM >= 1610){
-                this.Emisora_ActualAM = 530;
-            }
-        }
-        else{
-            double em_actual_fm = this.Emisora_ActualFM;
-            em_actual_fm = em_actual_fm + 0.2;
-            double emisora_un_decimal = new BigDecimal(em_actual_fm).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
-            this.Emisora_ActualFM = emisora_un_decimal;
-            if(em_actual_fm >=107.9){
-                this.Emisora_ActualFM = 87.9;
-            }
-        }
-    }
-/**
- * {@inheritDoc}
- */
-    public void EmisoraPasada(){
-        if(this.Modulacion == "AM"){
-            this.Emisora_ActualAM = (this.Emisora_ActualAM - 10);
-            if(this.Emisora_ActualAM <= 530){
-                this.Emisora_ActualAM = 530;
-            }
-        }
-        else{
-            double em_actual_fm = this.Emisora_ActualFM;
-            em_actual_fm = em_actual_fm - 0.2;
-            double emisora_un_decimal = new BigDecimal(em_actual_fm).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
-            this.Emisora_ActualFM = emisora_un_decimal;
-            if(em_actual_fm <= 87.9){
-                this.Emisora_ActualFM = 87.9;
-            }
-        }
-    }
-/**
- * {@inheritDoc}
- */
-    public void EscogerEmisoraFavorita(double[] amList,double[] fmList){
-        int opcion_numerica=1;
-        String emisora_escogida;
-        int Emisora_Escogida_Integer;
-        boolean entry_val;
-        System.out.println("\n-------------------------------------------------");
-        System.out.println("Estas son las emisoras guardadas en "+this.Modulacion);
-        if(this.Modulacion == "AM"){
-            for(int i=0;i<amList.length;i++){
-                System.out.println("Opcion No."+opcion_numerica+": " +amList[i]);
-                opcion_numerica++;
-            }
-        System.out.println("Escoja una emisora favorita guardada");
+    
+}
+public void EditarEmisorasFavorita(double[] amList,double[] fmList){
+    boolean val_entry;
+    String entry;
+    int option_chosen;
+
+    if(this.Modulacion == "AM"){
+        System.out.println("\n---------------------------------");
+        System.out.println("La emisora actual es"+this.Emisora_ActualAM+" Escoja un espacio para guardar esta emisora en sus emisoras favoritas");
+        System.out.println("Espacio 1");
+        System.out.println("Espacio 2");
+        System.out.println("Espacio 3");
+        System.out.println("Espacio 4");
+        System.out.println("Espacio 5");
+        System.out.println("Espacio 6");
         do{
-            emisora_escogida = scanner.nextLine();
-            entry_val = manejadora.VerificarEntradaInt(emisora_escogida);
-        }while(entry_val == false);
-        Emisora_Escogida_Integer = Integer.parseInt(emisora_escogida);
-        if(Emisora_Escogida_Integer == 1){
-            this.Emisora_ActualAM = amList[0];
-        }
-        if(Emisora_Escogida_Integer == 2){
-            this.Emisora_ActualAM = amList[1];
-        }
-        if(Emisora_Escogida_Integer == 3){
-            this.Emisora_ActualAM = amList[2];
-        }
-        if(Emisora_Escogida_Integer == 4){
-            this.Emisora_ActualAM = amList[3];
-        }
-        if(Emisora_Escogida_Integer == 5){
-            this.Emisora_ActualAM = amList[4];
-        }
-        if(Emisora_Escogida_Integer == 6){
-            this.Emisora_ActualAM = amList[5];
-        }
+            entry = scanner.nextLine();
+            val_entry = manejadora.VerificarEntradaInt(entry);
+        }while(val_entry == false);
 
-        }else{
-            for(int i = 0;i<fmList.length;i++){
-                System.out.println("Opcion No."+opcion_numerica+": "+fmList[i]);
-                opcion_numerica++;
-            }
-        System.out.println("Por favor, escoja una emisora favorita Guardada");
+        option_chosen = Integer.parseInt(entry);
+        if(option_chosen == 1){
+            amList[0] = this.Emisora_ActualAM;
+        }
+        if(option_chosen == 2){
+            amList[1] = this.Emisora_ActualAM;
+        }
+        if(option_chosen == 3){
+            amList[2] = this.Emisora_ActualAM;
+        }
+        if(option_chosen == 4){
+            amList[3] = this.Emisora_ActualAM;
+        }
+        if(option_chosen == 5){
+            amList[4] = this.Emisora_ActualAM;
+        }
+        if(option_chosen == 6){
+            amList[5] = this.Emisora_ActualAM;
+        }
+    }
+    if(this.Modulacion == "FM"){
+        System.out.println("\n---------------------------------");
+        System.out.println("La emisora actual es "+this.Emisora_ActualFM+" Escoja un espacio para guardar esta emisora en sus emisoras favoritas");
+        System.out.println("Espacio 1");
+        System.out.println("Espacio 2");
+        System.out.println("Espacio 3");
+        System.out.println("Espacio 4");
+        System.out.println("Espacio 5");
+        System.out.println("Espacio 6");
         do{
-            emisora_escogida = scanner.nextLine();
-            entry_val = manejadora.VerificarEntradaInt(emisora_escogida);
-        }while(entry_val == false);
-        Emisora_Escogida_Integer = Integer.parseInt(emisora_escogida);
-        if(Emisora_Escogida_Integer == 1){
-            this.Emisora_ActualFM = fmList[0];
+            entry = scanner.nextLine();
+            val_entry = manejadora.VerificarEntradaInt(entry);
+        }while(val_entry == false);
+
+        option_chosen = Integer.parseInt(entry);
+
+        if(option_chosen == 1){
+            fmList[0] = this.Emisora_ActualFM;
         }
-        if(Emisora_Escogida_Integer == 2){
-            this.Emisora_ActualFM = fmList[1];
+        if(option_chosen == 2){
+            fmList[1] = this.Emisora_ActualFM;
         }
-        if(Emisora_Escogida_Integer == 3){
-            this.Emisora_ActualFM = fmList[2];
+        if(option_chosen == 3){
+            fmList[2] = this.Emisora_ActualFM;
         }
-        if(Emisora_Escogida_Integer == 4){
-            this.Emisora_ActualFM = fmList[3];
+        if(option_chosen == 4){
+            fmList[3] = this.Emisora_ActualFM;
         }
-        if(Emisora_Escogida_Integer == 5){
-            this.Emisora_ActualFM = fmList[4];
+        if(option_chosen == 5){
+            fmList[4] = this.Emisora_ActualFM;
         }
-        if(Emisora_Escogida_Integer == 6){
-            this.Emisora_ActualFM = fmList[5];
+        if(option_chosen == 6){
+            fmList[5] = this.Emisora_ActualFM;
         }
-        }
-        System.out.println("Se ha escogido la emisora");
     }
-/**
- * {@inheritDoc}
- */
-    public void EditarEmisorasFavorita(double[] amList,double[] fmList){
-        boolean val_entry;
-        String entry;
-        int option_chosen;
-
-        if(this.Modulacion == "AM"){
-            System.out.println("\n---------------------------------");
-            System.out.println("La emisora actual es"+this.Emisora_ActualAM+" Escoja un espacio para guardar esta emisora en sus emisoras favoritas");
-            System.out.println("Espacio 1");
-            System.out.println("Espacio 2");
-            System.out.println("Espacio 3");
-            System.out.println("Espacio 4");
-            System.out.println("Espacio 5");
-            System.out.println("Espacio 6");
-            do{
-                entry = scanner.nextLine();
-                val_entry = manejadora.VerificarEntradaInt(entry);
-            }while(val_entry == false);
-
-            option_chosen = Integer.parseInt(entry);
-            if(option_chosen == 1){
-                amList[0] = this.Emisora_ActualAM;
-            }
-            if(option_chosen == 2){
-                amList[1] = this.Emisora_ActualAM;
-            }
-            if(option_chosen == 3){
-                amList[2] = this.Emisora_ActualAM;
-            }
-            if(option_chosen == 4){
-                amList[3] = this.Emisora_ActualAM;
-            }
-            if(option_chosen == 5){
-                amList[4] = this.Emisora_ActualAM;
-            }
-            if(option_chosen == 6){
-                amList[5] = this.Emisora_ActualAM;
-            }
+    System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+}
+public void EscogerEmisoraFavorita(double[] amList,double[] fmList){
+    int opcion_numerica=1;
+    String emisora_escogida;
+    int Emisora_Escogida_Integer;
+    boolean entry_val;
+    System.out.println("\n-------------------------------------------------");
+    System.out.println("Estas son las emisoras guardadas en "+this.Modulacion);
+    if(this.Modulacion == "AM"){
+        for(int i=0;i<amList.length;i++){
+            System.out.println("Opcion No."+opcion_numerica+": " +amList[i]);
+            opcion_numerica++;
         }
-        if(this.Modulacion == "FM"){
-            System.out.println("\n---------------------------------");
-            System.out.println("La emisora actual es "+this.Emisora_ActualFM+" Escoja un espacio para guardar esta emisora en sus emisoras favoritas");
-            System.out.println("Espacio 1");
-            System.out.println("Espacio 2");
-            System.out.println("Espacio 3");
-            System.out.println("Espacio 4");
-            System.out.println("Espacio 5");
-            System.out.println("Espacio 6");
-            do{
-                entry = scanner.nextLine();
-                val_entry = manejadora.VerificarEntradaInt(entry);
-            }while(val_entry == false);
-
-            option_chosen = Integer.parseInt(entry);
-
-            if(option_chosen == 1){
-                fmList[0] = this.Emisora_ActualFM;
-            }
-            if(option_chosen == 2){
-                fmList[1] = this.Emisora_ActualFM;
-            }
-            if(option_chosen == 3){
-                fmList[2] = this.Emisora_ActualFM;
-            }
-            if(option_chosen == 4){
-                fmList[3] = this.Emisora_ActualFM;
-            }
-            if(option_chosen == 5){
-                fmList[4] = this.Emisora_ActualFM;
-            }
-            if(option_chosen == 6){
-                fmList[5] = this.Emisora_ActualFM;
-            }
-        }
-        System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+    System.out.println("Escoja una emisora favorita guardada");
+    do{
+        emisora_escogida = scanner.nextLine();
+        entry_val = manejadora.VerificarEntradaInt(emisora_escogida);
+    }while(entry_val == false);
+    Emisora_Escogida_Integer = Integer.parseInt(emisora_escogida);
+    if(Emisora_Escogida_Integer == 1){
+        this.Emisora_ActualAM = amList[0];
     }
+    if(Emisora_Escogida_Integer == 2){
+        this.Emisora_ActualAM = amList[1];
+    }
+    if(Emisora_Escogida_Integer == 3){
+        this.Emisora_ActualAM = amList[2];
+    }
+    if(Emisora_Escogida_Integer == 4){
+        this.Emisora_ActualAM = amList[3];
+    }
+    if(Emisora_Escogida_Integer == 5){
+        this.Emisora_ActualAM = amList[4];
+    }
+    if(Emisora_Escogida_Integer == 6){
+        this.Emisora_ActualAM = amList[5];
+    }
+
+    }else{
+        for(int i = 0;i<fmList.length;i++){
+            System.out.println("Opcion No."+opcion_numerica+": "+fmList[i]);
+            opcion_numerica++;
+        }
+    System.out.println("Por favor, escoja una emisora favorita Guardada");
+    do{
+        emisora_escogida = scanner.nextLine();
+        entry_val = manejadora.VerificarEntradaInt(emisora_escogida);
+    }while(entry_val == false);
+    Emisora_Escogida_Integer = Integer.parseInt(emisora_escogida);
+    if(Emisora_Escogida_Integer == 1){
+        this.Emisora_ActualFM = fmList[0];
+    }
+    if(Emisora_Escogida_Integer == 2){
+        this.Emisora_ActualFM = fmList[1];
+    }
+    if(Emisora_Escogida_Integer == 3){
+        this.Emisora_ActualFM = fmList[2];
+    }
+    if(Emisora_Escogida_Integer == 4){
+        this.Emisora_ActualFM = fmList[3];
+    }
+    if(Emisora_Escogida_Integer == 5){
+        this.Emisora_ActualFM = fmList[4];
+    }
+    if(Emisora_Escogida_Integer == 6){
+        this.Emisora_ActualFM = fmList[5];
+    }
+    }
+    System.out.println("Se ha escogido la emisora");
+}
+//emisora siguiente
+@Override
+public void nextStation(boolean frequency) {
+    if(this.Modulacion == "AM"){
+        this.Emisora_ActualAM = (this.Emisora_ActualAM + 10);
+        if(this.Emisora_ActualAM >= 1610){
+            this.Emisora_ActualAM = 530;
+        }
+    }
+    else{
+        double em_actual_fm = this.Emisora_ActualFM;
+        em_actual_fm = em_actual_fm + 0.2;
+        double emisora_un_decimal = new BigDecimal(em_actual_fm).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
+        this.Emisora_ActualFM = emisora_un_decimal;
+        if(em_actual_fm >=107.9){
+            this.Emisora_ActualFM = 87.9;
+        }
+    }
+    
+}
+
+//emisora anterior
+@Override
+public void prevStation(boolean frequency) {
+    if(this.Modulacion == "AM"){
+        this.Emisora_ActualAM = (this.Emisora_ActualAM - 10);
+        if(this.Emisora_ActualAM <= 530){
+            this.Emisora_ActualAM = 530;
+        }
+    }
+    else{
+        double em_actual_fm = this.Emisora_ActualFM;
+        em_actual_fm = em_actual_fm - 0.2;
+        double emisora_un_decimal = new BigDecimal(em_actual_fm).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
+        this.Emisora_ActualFM = emisora_un_decimal;
+        if(em_actual_fm <= 87.9){
+            this.Emisora_ActualFM = 87.9;
+        }
+    }
+    
+}
+
+@Override
+public double getStation() {
+    return 0;
+}
+
+@Override
+public void saveStation(int position, double station) {
+}
+
+@Override
+public double getSavedStation(int position) {
+    return 0;
+}
+
+@Override
+public boolean getFrequency() {
+    return false;
+}
+
+//cambiar modulacion
+@Override
+public void switchAMFM() {
+    if(this.Modulacion == "AM"){
+        this.Modulacion = "FM";
+    }else{
+        this.Modulacion = "AM";
+    }
+    System.out.println("Se ha cambiado la modulacion. Usted esta escuchando ahora en "+getModulacion()); 
+    }
+
 }
