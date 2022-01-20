@@ -296,7 +296,7 @@ public void turnOnOff() {
     }
     
 }
-public void EditarEmisorasFavorita(double[] amList,double[] fmList){
+public void EditarEmisorasFavorita(){
     boolean val_entry;
     String entry;
     int option_chosen;
@@ -316,24 +316,7 @@ public void EditarEmisorasFavorita(double[] amList,double[] fmList){
         }while(val_entry == false);
 
         option_chosen = Integer.parseInt(entry);
-        if(option_chosen == 1){
-            amList[0] = this.Emisora_ActualAM;
-        }
-        if(option_chosen == 2){
-            amList[1] = this.Emisora_ActualAM;
-        }
-        if(option_chosen == 3){
-            amList[2] = this.Emisora_ActualAM;
-        }
-        if(option_chosen == 4){
-            amList[3] = this.Emisora_ActualAM;
-        }
-        if(option_chosen == 5){
-            amList[4] = this.Emisora_ActualAM;
-        }
-        if(option_chosen == 6){
-            amList[5] = this.Emisora_ActualAM;
-        }
+        saveStation(option_chosen, this.Emisora_ActualAM);
     }
     if(this.Modulacion == "FM"){
         System.out.println("\n---------------------------------");
@@ -350,27 +333,9 @@ public void EditarEmisorasFavorita(double[] amList,double[] fmList){
         }while(val_entry == false);
 
         option_chosen = Integer.parseInt(entry);
-
-        if(option_chosen == 1){
-            fmList[0] = this.Emisora_ActualFM;
-        }
-        if(option_chosen == 2){
-            fmList[1] = this.Emisora_ActualFM;
-        }
-        if(option_chosen == 3){
-            fmList[2] = this.Emisora_ActualFM;
-        }
-        if(option_chosen == 4){
-            fmList[3] = this.Emisora_ActualFM;
-        }
-        if(option_chosen == 5){
-            fmList[4] = this.Emisora_ActualFM;
-        }
-        if(option_chosen == 6){
-            fmList[5] = this.Emisora_ActualFM;
-        }
+        saveStation(option_chosen, this.Emisora_ActualFM);
     }
-    System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+    
 }
 public void EscogerEmisoraFavorita(double[] amList,double[] fmList){
     int opcion_numerica=1;
@@ -485,11 +450,83 @@ public void prevStation(boolean frequency) {
 
 @Override
 public double getStation() {
+    if(this.Modulacion.equals("AM"))
+    {
+        return getEmisora_ActualAM();
+    }else if (this.Modulacion.equals("FM")){
+        return getEmisora_ActualFM();
+    }
     return 0;
 }
 
 @Override
 public void saveStation(int position, double station) {
+    if(this.Modulacion.equals("AM"))
+    {
+        switch(position)
+        {
+            case 1:
+                this.Emisora_Favorita1 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 2:
+                this.Emisora_Favorita2 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 3:
+                this.Emisora_Favorita3 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 4: 
+                this.Emisora_Favorita4 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 5:
+                this.Emisora_Favorita5 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 6:
+                this.Emisora_Favorita6 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            default:
+                System.out.println("No ha ingresado un botón válido");
+                break;
+        }
+    }else if(this.Modulacion.equals("FM"))
+    {
+        switch(position)
+        {
+            case 1:
+                this.Emisora_Favorita7 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 2:
+                this.Emisora_Favorita8 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 3:
+                this.Emisora_Favorita9 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 4: 
+                this.Emisora_Favorita10 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 5:
+                this.Emisora_Favorita11 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            case 6:
+                this.Emisora_Favorita12 = station;
+                System.out.println("Se ha agregado la emisora a sus emisoras favoritas");
+                break;
+            default:
+                System.out.println("No ha ingresado un botón válido.");
+                break;
+        }
+    }
+    
 }
 
 @Override

@@ -8,7 +8,7 @@ public class Controladora {
     
     Manejadora ex = new Manejadora();//se instancia este objeto para manejar las excepciones cometidas por el usuario
     Scanner scanner = new Scanner(System.in);//para permitir ingreso de informacion al usuario por el teclado
-    IRadio radio = new IRadio(true, "FM",530, 87.9, 530, 540, 530, 530, 530, 530, 87.9, 87.9, 87.9, 87.9, 87.9, 87.9);//constructor clase IRadio. 
+    IRadio radio = new IRadio(true, "FM",530, 87.9, 530, 530, 530, 530, 530, 530, 87.9, 87.9, 87.9, 87.9, 87.9, 87.9);//constructor clase IRadio. 
 
     String entrada;//variable que guarda informacion de entrada del usuario
     int opcion;//opcion que pueda escoger el usuario en los menus
@@ -118,7 +118,7 @@ public class Controladora {
     
                 //Hace que la emisora actual, dependiendo de la modulacion, sea agregada a una lista, en el espacio que el usuario quiera agregarla
                 case 6:
-                radio.EditarEmisorasFavorita(AMList, FMList);;//nuevamente se utilizaron dos listas para facilitar la programacion. Ademas, las emisoras favoritas en AM son totalmente diferentes a las emisoras favoritas en FM
+                radio.EditarEmisorasFavorita();;//nuevamente se utilizaron dos listas para facilitar la programacion. Ademas, las emisoras favoritas en AM son totalmente diferentes a las emisoras favoritas en FM
                 break;
             }
           }    
