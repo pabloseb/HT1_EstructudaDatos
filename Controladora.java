@@ -14,13 +14,11 @@ public class Controladora {
     int opcion;//opcion que pueda escoger el usuario en los menus
     boolean val_entrada;//valida que la entrada del usuario sea correcta, depende de la clase manejadora
     boolean program = true;//para mantener el bucle infinito, a menos que el usuario apague el radio
-
-/**
-     * Metodo que brinda informacion importante de la radio. Ademas, guarda las emisoras favoritas del usuario dependiendo de lo que haya en el constructor
-     */
-    public void GeneralStatus(){
-
-        //se agregan las emisoras favoritas del constructor a sus respectivas listas
+    
+    
+    
+    public void refrescarListaRadios() {
+    	//se agregan las emisoras favoritas del constructor a sus respectivas listas
         AMList[0] = radio.getEmisora_Favorita1();
         AMList[1] = radio.getEmisora_Favorita2();
         AMList[2] = radio.getEmisora_Favorita3();
@@ -34,9 +32,18 @@ public class Controladora {
         FMList[3] = radio.getEmisora_Favorita10();
         FMList[4] = radio.getEmisora_Favorita11();
         FMList[5] = radio.getEmisora_Favorita12();
+    }
 
+/**
+     * Metodo que brinda informacion importante de la radio. Ademas, guarda las emisoras favoritas del usuario dependiendo de lo que haya en el constructor
+     */
+  
+    public void GeneralStatus(){
+
+        
+    	this.refrescarListaRadios();
         System.out.println("------------------------------------------------------------");
-        System.out.println("Informacion General Radio\n");    
+        System.out.println("Información General Radio\n");    
 
         //por default el radio se encuentra encendido para que el usuario lo pueda usar. De apagarlo, finaliza el programa, aunque depende del metodo definido luego y del valor en el constructor
         if(radio.getStatus() == false){
@@ -84,16 +91,23 @@ public class Controladora {
             }while(val_entrada == false);//se repite el menu si el usuario no ingresa un dato correcto o si la opcion no se encuentra en el menu
     
             opcion = Integer.parseInt(entrada);//se obtiene la opcion escogida en el menu
-    
+            
+          //cambia el estado de la radio, empieza estando encendido, pero si se apaga el radio, se finaliza la simulacion
+            if (opcion== 1) {
+            	radio.turnOnOff();
+            }
+            
+            if (radio.getStatus()==false){
+            	
+            	System.out.println("La radio está apagada, prendala si quiere hacer opciones /n" );
+            
+            }
+            
+            else {
+            	
             switch(opcion){
-                //cambia el estado de la radio, empieza estando encendido, pero si se apaga el radio, se finaliza la simulacion
-                case 1:
-                radio.turnOnOff();
-                if(radio.getStatus() == false){
-                    System.exit(0);
-                }
-                break;
-    
+                
+              
                 //permite cambiar de AM a FM y viceversa
                 case 2:
                 radio.switchAMFM();
@@ -119,7 +133,12 @@ public class Controladora {
                 //Hace que la emisora actual, dependiendo de la modulacion, sea agregada a una lista, en el espacio que el usuario quiera agregarla
                 case 6:
                 radio.EditarEmisorasFavorita();;//nuevamente se utilizaron dos listas para facilitar la programacion. Ademas, las emisoras favoritas en AM son totalmente diferentes a las emisoras favoritas en FM
+                this.refrescarListaRadios();
                 break;
+                
+                case 7:
+                	
+             }
             }
           }    
         }
